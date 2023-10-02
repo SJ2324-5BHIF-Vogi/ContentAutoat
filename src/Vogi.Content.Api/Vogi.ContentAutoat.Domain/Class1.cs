@@ -1,7 +1,17 @@
-﻿namespace Vogi.ContentAutoat.Domain
+﻿
+namespace Vogi.ContentAutoat.Domain
 {
-    public class Class1
+    public class Content
     {
+
+        public int Id { get; set; }
+
+        public Guid Guid { get; set; }
+
+        public string Text { get; set; }
+
+
+
 
     }
 }
