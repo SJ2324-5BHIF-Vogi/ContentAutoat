@@ -12,16 +12,17 @@ using Vogi.ContentAutoat.Domain.Model;
 
 namespace Vogi.ContentAutoat.Application.ContentHandler
 {
-    public class GetAllContentHandler : IRequestHandler<ContentGetAllDto, IEnumerable<ContentDto>>
+    public class GetAllContentHandler : IRequestHandler<ContentGetAllDto, IEnumerable<ContentDisplayDto>>
     {
-        private readonly IContentWriteRepository _writeRepo;
-        public GetAllContentHandler(IContentWriteRepository writeRepo)
+        private readonly IContentReadRepository _readRepo;
+        public GetAllContentHandler(IContentReadRepository readRepo)
         {
-            _writeRepo = writeRepo;
+            _readRepo = readRepo;
         }
-        public Task<IEnumerable<ContentDto>> Handle(ContentGetAllDto request, CancellationToken cancellationToken)
+        public Task<IEnumerable<ContentDisplayDto>> Handle(ContentGetAllDto request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var data = _readRepo.GetAll(request.Page, request.PageSize, request.User, request.VorGrenze, request.NachGrenze).Select(x => (ContentDisplayDto)x);
+            return Task.FromResult(data);
         }
     }
 }

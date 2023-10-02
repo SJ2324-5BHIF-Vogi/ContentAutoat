@@ -20,7 +20,8 @@ namespace Vogi.ContentAutoat.Application.ContentHandler
         }
         public Task Handle(ContentDeleteDto request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _writeRepo.Delete(request.guid);
+            return Task.CompletedTask;
         }
     }
 }
