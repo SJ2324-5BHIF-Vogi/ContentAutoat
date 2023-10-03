@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using Vogi.ContentAutoat.Domain.Configuration;
 
 namespace Vogi.ContentAutoat.Infrastructure
 {
@@ -6,10 +7,10 @@ namespace Vogi.ContentAutoat.Infrastructure
     {
         private readonly IMongoDatabase _database;
 
-        public MongoContext(string ConnectionString, string Database)
+        public MongoContext(DataBaseCo databaseCo)
         {
-            var client = new MongoClient(ConnectionString);
-            _database = client.GetDatabase(Database);
+            var client = new MongoClient(databaseCo.ConnectionString);
+            _database = client.GetDatabase(databaseCo.DataBaseName);
         }
         public IMongoCollection<T> GetCollection<T>()
         {

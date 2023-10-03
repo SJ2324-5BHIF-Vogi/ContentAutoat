@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Vogi.ContentAutoat.Domain\Vogi.ContentAutoat.Domain.csproj" />
+    <ProjectReference Include="..\Vogi.Content.DbExtension\Vogi.Content.DbExtension.csproj" />
+    <ProjectReference Include="..\Vogi.ContentAutoat.Application\Vogi.ContentAutoat.Application.csproj" />
   </ItemGroup>
 
 </Project>

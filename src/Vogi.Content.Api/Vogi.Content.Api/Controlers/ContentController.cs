@@ -33,12 +33,13 @@ namespace Vogi.Content.Api.Controlers
         {
             _contentAddDto.ValidateAndThrow(contenDto);
             var guid = _mediator.Send(contenDto);
-            return Ok(guid);
+            return Created("Content/" + guid, guid);
         }
 
         [HttpPatch]
         public IActionResult Update([FromRoute()] Guid Guid, [FromBody()] ContentUpdateDto contenDto)
         {
+            _contentUpdateDto.ValidateAndThrow(contenDto);
             var guid = _mediator.Send(contenDto);
             return Ok(guid);
         }
@@ -47,6 +48,7 @@ namespace Vogi.Content.Api.Controlers
         public IActionResult Delete([FromRoute()] Guid Guid)
         {
             var dto = new ContentDeleteDto() { guid = Guid };
+            _contentDeleteDto.ValidateAndThrow(dto);
             _mediator.Send(dto);
             return Ok();
         }
@@ -55,14 +57,25 @@ namespace Vogi.Content.Api.Controlers
         public IActionResult Get([FromRoute()]Guid Guid)
         {
             var dto = new ContentGetDto() { guid = Guid };
+            _contentGetDto.ValidateAndThrow(dto);
             var result = _mediator.Send(dto);
             return Ok(result);
         }
 
         [HttpGet()]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery()]int Page = 1, [FromQuery()] int PageSize= 200, [FromQuery()] Guid? User = null, [FromQuery()] DateTime? VorGrenze = null, [FromQuery()] DateTime? NachGrenze= null)
         {
-            var dto = new ContentGetAllDto();
+            var dto = new ContentGetAllDto()
+            {
+                Page = Page,
+                NachGrenze = NachGrenze,
+                VorGrenze = VorGrenze,
+                PageSize = PageSize,
+                User = User
+            };
+
+            _contentGetAllDto.ValidateAndThrow(dto);
+
             _mediator.Send(dto);
             return Ok();
         }

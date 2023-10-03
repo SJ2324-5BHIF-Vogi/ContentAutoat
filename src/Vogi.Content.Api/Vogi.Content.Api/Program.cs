@@ -1,8 +1,15 @@
+#region usings
 using FluentValidation;
+using Vogi.Content.DbExtension;
 using Vogi.ContentAutoat.Application.Validators;
+using Vogi.ContentAutoat.Domain.Configuration;
 using Vogi.ContentAutoat.Domain.Dtos.Mediator;
 using Vogi.ContentAutoat.Domain.Dtos.Mediator.Base;
+using Vogi.ContentAutoat.Domain.Interfaces.Repository;
+using Vogi.ContentAutoat.Repository;
+#endregion
 
+#region BuilderSetup
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,7 +18,21 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+#endregion
 
+#region Configuration
+var Conf = builder.Configuration;
+var DataBase = Conf.GetSection("Database");
+
+string ConnectionString = DataBase.GetValue<string>("ConnectionString");
+string DataBaseName = DataBase.GetValue<string>("DatabaseName");
+
+var DataBaseConf = new DataBaseCo(ConnectionString, DataBaseName);
+#endregion
+
+#region Database
+builder.Services.ConfigureMongo(DataBaseConf);
+#endregion
 
 #region Validators
 builder.Services.AddScoped<IValidator<ContentAddDto>, ContentDtoValidator>();
@@ -23,6 +44,11 @@ builder.Services.AddScoped<IValidator<ContentGetDto>, GuidDtoValidator>();
 builder.Services.AddScoped<IValidator<ContentDeleteDto>, GuidDtoValidator>();
 #endregion
 
+#region Repositories
+builder.Services.AddScoped<IContentReadRepository, ContentRepository>();
+builder.Services.AddScoped<IContentWriteRepository, ContentRepository>();
+#endregion
+
 #region Mediator
 builder.Services.AddMediatR((c) =>
 {
@@ -30,10 +56,7 @@ builder.Services.AddMediatR((c) =>
 });
 #endregion
 
-
-
-
-
+#region App
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -50,3 +73,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+#endregion
