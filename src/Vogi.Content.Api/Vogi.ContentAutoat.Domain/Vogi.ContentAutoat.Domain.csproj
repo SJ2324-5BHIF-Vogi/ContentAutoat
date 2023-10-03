@@ -8,10 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
+    <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
   </ItemGroup>
 
 </Project>

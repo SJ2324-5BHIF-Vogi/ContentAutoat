@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Vogi.ContentAutoat.Domain.Dtos;
 using Vogi.ContentAutoat.Domain.Dtos.Mediator;
 
-namespace Vogi.Content.Api.Controlers
+namespace Vogi.ContentAutoat.Api.Controlers
 {
     [Route("api/[controller]")]
     [ApiController]

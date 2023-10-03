@@ -1,6 +1,6 @@
 #region usings
 using FluentValidation;
-using Vogi.Content.DbExtension;
+using Vogi.ContentAutoat.DbExtension;
 using Vogi.ContentAutoat.Application.Validators;
 using Vogi.ContentAutoat.Domain.Configuration;
 using Vogi.ContentAutoat.Domain.Dtos.Mediator;

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Vogi.Content.DbExtension\Vogi.Content.DbExtension.csproj" />
+    <ProjectReference Include="..\Vogi.Content.DbExtension\Vogi.ContentAutoat.DbExtension.csproj" />
     <ProjectReference Include="..\Vogi.ContentAutoat.Application\Vogi.ContentAutoat.Application.csproj" />
   </ItemGroup>
 

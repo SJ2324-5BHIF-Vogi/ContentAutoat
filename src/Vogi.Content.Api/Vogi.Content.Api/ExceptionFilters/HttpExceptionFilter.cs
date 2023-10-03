@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using Vogi.ContentAutoat.Domain.Exceptions;
 
-namespace Vogi.Content.Api.ExceptionFilters
+namespace Vogi.ContentAutoat.Api.ExceptionFilters
 {
     public class HttpExceptionFilter : ExceptionFilterAttribute
     {

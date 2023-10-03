@@ -3,15 +3,24 @@ using System.Linq;
 using MongoDB.Driver;
 using Vogi.ContentAutoat.Domain.Model;
 using Vogi.ContentAutoat.Domain.Interfaces.Repository;
+using Vogi.ContentAutoat.Domain.Interfaces.Infrastructure;
+using Vogi.ContentAutoat.Domain.Interfaces.ExtensionMethodeWrapper;
 
 namespace Vogi.ContentAutoat.Repository
 {
     public class ContentRepository : IContentWriteRepository, IContentReadRepository
     {
-        private readonly MongoContext _context;
-        public ContentRepository(MongoContext context)
+        private readonly IMongoContext _context;
+        private readonly IToEnumerable _toEnumerable;
+        private readonly IFindFluentFind _findFluentFind;
+        private readonly ISingleOrDefault _singleOrDefault;
+
+        public ContentRepository(IMongoContext context, IToEnumerable toEnumerable, IFindFluentFind findFluentFind, ISingleOrDefault singleOrDefault)
         {
             _context = context;
+            _toEnumerable = toEnumerable;
+            _findFluentFind = findFluentFind;
+            _singleOrDefault = singleOrDefault;
         }
 
         public IEnumerable<Content> GetAll(int Page, int PageSize, Guid? User = null, DateTime? VorGrenze = null, DateTime? NachGrenze = null)
@@ -33,11 +42,11 @@ namespace Vogi.ContentAutoat.Repository
                 filter &= Builders<Content>.Filter.Lte(c => c.Posted, NachGrenze.Value);
             }
 
-            var Result = _context.GetCollection<Content>()
-                                 .Find(filter)
+            var Result = _toEnumerable.ToEnumerable(
+                _findFluentFind.Find(_context.GetCollection<Content>(), filter)
                                  .Skip((Page - 1) * PageSize)
                                  .Limit(PageSize)
-                                 .ToEnumerable();
+                                 );
 
             return Result;
         }
@@ -45,7 +54,7 @@ namespace Vogi.ContentAutoat.Repository
         public Content? FindByGuid(Guid guid)
         {
             var filter = Builders<Content>.Filter.Eq(c => c.Guid, guid);
-            return _context.GetCollection<Content>().Find(filter).SingleOrDefault();
+            return _singleOrDefault.SingleOrDefault(_findFluentFind.Find(_context.GetCollection<Content>(),filter));
         }
 
         public void Add(Content content)

@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Vogi.ContentAutoat.Domain\Vogi.ContentAutoat.Domain.csproj" />
+    <ProjectReference Include="..\Vogi.ContentAutoat.Repository\Vogi.ContentAutoat.Repository.csproj" />
   </ItemGroup>
 
 </Project>

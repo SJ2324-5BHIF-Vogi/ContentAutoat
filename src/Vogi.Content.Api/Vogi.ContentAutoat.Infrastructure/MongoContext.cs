@@ -1,9 +1,10 @@
 ﻿using MongoDB.Driver;
 using Vogi.ContentAutoat.Domain.Configuration;
+using Vogi.ContentAutoat.Domain.Interfaces.Infrastructure;
 
 namespace Vogi.ContentAutoat.Infrastructure
 {
-    public class MongoContext
+    public class MongoContext: IMongoContext
     {
         private readonly IMongoDatabase _database;
 

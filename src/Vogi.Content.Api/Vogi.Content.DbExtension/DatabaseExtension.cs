@@ -2,7 +2,7 @@
 using Vogi.ContentAutoat.Domain.Configuration;
 using Vogi.ContentAutoat.Infrastructure;
 
-namespace Vogi.Content.DbExtension
+namespace Vogi.ContentAutoat.DbExtension
 {
     public static class DatabaseExtensions
     {
