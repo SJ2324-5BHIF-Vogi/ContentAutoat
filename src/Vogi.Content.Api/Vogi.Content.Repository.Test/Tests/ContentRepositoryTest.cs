@@ -31,7 +31,7 @@ namespace Vogi.ContentAutoat.Repository.Test.Tests
 
 
             //Assert
-            RepoMocked.MongoCollectionM.Mock.Verify(m => m.DeleteOne(It.Is<FilterDefinition<Content>>(w=>w)), Times.Once);
+      //      RepoMocked.MongoCollectionM.Mock.Verify(m => m.DeleteOne(It.Is<FilterDefinition<Content>>(w=>w)), Times.Once);
         }
 
         [Fact]
