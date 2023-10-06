@@ -22,6 +22,5 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
                 .Returns(Single);
             
         }
-        
     }
 }

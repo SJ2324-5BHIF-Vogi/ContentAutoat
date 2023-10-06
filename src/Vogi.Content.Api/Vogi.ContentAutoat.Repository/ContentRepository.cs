@@ -5,6 +5,7 @@ using Vogi.ContentAutoat.Domain.Model;
 using Vogi.ContentAutoat.Domain.Interfaces.Repository;
 using Vogi.ContentAutoat.Domain.Interfaces.Infrastructure;
 using Vogi.ContentAutoat.Domain.Interfaces.ExtensionMethodeWrapper;
+using MongoDB.Bson;
 
 namespace Vogi.ContentAutoat.Repository
 {
@@ -72,6 +73,7 @@ namespace Vogi.ContentAutoat.Repository
         public bool Delete(Guid guid)
         {
             var filter = Builders<Content>.Filter.Eq(c => c.Guid, guid);
+            var a = filter.ToBson();
             var result = _context.GetCollection<Content>().DeleteOne(filter);
             return result.IsAcknowledged && result.DeletedCount > 0;
         }

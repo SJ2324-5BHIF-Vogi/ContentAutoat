@@ -9,18 +9,27 @@ using Vogi.ContentAutoat.Repository.Test.Mock;
 
 namespace Vogi.ContentAutoat.Repository.Test.Repository
 {
-    public class ContentRepositoryMocked
+    internal class ContentRepositoryMocked
     {
         public ContentRepository Repo { get; init; }
+
+        public FindFluentMock FindFluentMock { get; init; }
+        public MongoCollectionMock MongoCollectionM { get; init; }
+        public MongoContextMock MongoContextM { get; init; }
+        public EnumerableMock ToEnumerableMock { get; init; }
+        public SingleOrDefaultMock SingleOrDefaultMock { get; init; }
+        public FluentFIndMock FluentFIndInterfaceMock { get; init; }
+
         public ContentRepositoryMocked()
         {
-            var _findFM = new FindFluentMock();
-            var _mCollectionM = new MongoCollectionMock(_findFM);
-            var _mContextM = new MongoContextMock(_mCollectionM);
-            var _toEnumerableMock = new Mock<IToEnumerable>();
-            var _findFluentFindMock = new Mock<IFindFluentFind>();
-            var _singleOrDefaultMock = new Mock<ISingleOrDefault>();
-            Repo = new ContentRepository(_mContextM.Mock.Object, _toEnumerableMock.Object, _findFluentFindMock.Object, _singleOrDefaultMock.Object);
+            FindFluentMock = new FindFluentMock();
+            MongoCollectionM = new MongoCollectionMock(FindFluentMock);
+            MongoContextM = new MongoContextMock(MongoCollectionM);
+            ToEnumerableMock = new EnumerableMock(FindFluentMock.TestData);
+            SingleOrDefaultMock = new SingleOrDefaultMock(FindFluentMock.TestData[0]);
+            FluentFIndInterfaceMock = new FluentFIndMock(FindFluentMock);
+
+            Repo = new ContentRepository(MongoContextM.Mock.Object, ToEnumerableMock.Mock.Object, FluentFIndInterfaceMock.Mock.Object, SingleOrDefaultMock.Mock.Object);
         }
     }
 }
