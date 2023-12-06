@@ -24,27 +24,27 @@ namespace Vogi.ContentAutoat.Repository
             _singleOrDefault = singleOrDefault;
         }
 
-        public IEnumerable<Content> GetAll(int Page, int PageSize, Guid? User = null, DateTime? VorGrenze = null, DateTime? NachGrenze = null)
+        public IEnumerable<ContentData> GetAll(int Page, int PageSize, Guid? User = null, DateTime? VorGrenze = null, DateTime? NachGrenze = null)
         {
-            var filter = Builders<Content>.Filter.Empty;
+            var filter = Builders<ContentData>.Filter.Empty;
 
             if (User.HasValue)
             {
-                filter &= Builders<Content>.Filter.Eq(c => c.User, User.Value);
+                filter &= Builders<ContentData>.Filter.Eq(c => c.User, User.Value);
             }
 
             if (VorGrenze.HasValue)
             {
-                filter &= Builders<Content>.Filter.Gte(c => c.Posted, VorGrenze.Value);
+                filter &= Builders<ContentData>.Filter.Gte(c => c.Posted, VorGrenze.Value);
             }
 
             if (NachGrenze.HasValue)
             {
-                filter &= Builders<Content>.Filter.Lte(c => c.Posted, NachGrenze.Value);
+                filter &= Builders<ContentData>.Filter.Lte(c => c.Posted, NachGrenze.Value);
             }
 
             var Result = _toEnumerable.ToEnumerable(
-                _findFluentFind.Find(_context.GetCollection<Content>(), filter)
+                _findFluentFind.Find(_context.GetCollection<ContentData>(), filter)
                                  .Skip((Page - 1) * PageSize)
                                  .Limit(PageSize)
                                  );
@@ -52,29 +52,29 @@ namespace Vogi.ContentAutoat.Repository
             return Result;
         }
 
-        public Content? FindByGuid(Guid guid)
+        public ContentData? FindByGuid(Guid guid)
         {
-            var filter = Builders<Content>.Filter.Eq(c => c.Guid, guid);
-            return _singleOrDefault.SingleOrDefault(_findFluentFind.Find(_context.GetCollection<Content>(),filter));
+            var filter = Builders<ContentData>.Filter.Eq(c => c.Guid, guid);
+            return _singleOrDefault.SingleOrDefault(_findFluentFind.Find(_context.GetCollection<ContentData>(),filter));
         }
 
-        public void Add(Content content)
+        public void Add(ContentData content)
         {
-            _context.GetCollection<Content>().InsertOne(content);
+            _context.GetCollection<ContentData>().InsertOne(content);
         }
 
-        public bool Update(Guid guid, Content updatedContent)
+        public bool Update(Guid guid, ContentData updatedContent)
         {
-            var filter = Builders<Content>.Filter.Eq(c => c.Guid, guid);
-            var result = _context.GetCollection<Content>().ReplaceOne(filter, updatedContent);
+            var filter = Builders<ContentData>.Filter.Eq(c => c.Guid, guid);
+            var result = _context.GetCollection<ContentData>().ReplaceOne(filter, updatedContent);
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
         public bool Delete(Guid guid)
         {
-            var filter = Builders<Content>.Filter.Eq(c => c.Guid, guid);
+            var filter = Builders<ContentData>.Filter.Eq(c => c.Guid, guid);
             var a = filter.ToBson();
-            var result = _context.GetCollection<Content>().DeleteOne(filter);
+            var result = _context.GetCollection<ContentData>().DeleteOne(filter);
             return result.IsAcknowledged && result.DeletedCount > 0;
         }
     }

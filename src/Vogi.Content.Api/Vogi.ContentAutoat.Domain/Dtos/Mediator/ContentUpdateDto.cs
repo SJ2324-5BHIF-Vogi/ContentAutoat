@@ -11,9 +11,9 @@ namespace Vogi.ContentAutoat.Domain.Dtos.Mediator
 {
     public class ContentUpdateDto : ContentDto, IRequest
     {
-        public static implicit operator Content(ContentUpdateDto content)
+        public static implicit operator ContentData(ContentUpdateDto content)
         {
-            return new Content()
+            return new ContentData()
             {
                 Titel = content.Titel,
                 Data = content.Data,

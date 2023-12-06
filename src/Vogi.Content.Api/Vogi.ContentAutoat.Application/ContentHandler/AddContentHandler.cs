@@ -21,7 +21,7 @@ namespace Vogi.ContentAutoat.Application.ContentHandler
 
         public Task<Guid> Handle(ContentAddDto request, CancellationToken cancellationToken)
         {
-            Content content = request;
+            ContentData content = request;
             _writeRepo.Add(content);
 
             return Task.FromResult(content.Guid);

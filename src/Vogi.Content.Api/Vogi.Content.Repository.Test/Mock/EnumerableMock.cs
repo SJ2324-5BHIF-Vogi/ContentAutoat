@@ -14,10 +14,10 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
     {
         public Mock<IToEnumerable> Mock { get; init; }
         
-        public EnumerableMock(IEnumerable<Content> list)
+        public EnumerableMock(IEnumerable<ContentData> list)
         {
             Mock = new Mock<IToEnumerable>();
-            Mock.Setup(m => m.ToEnumerable(It.IsAny<IAsyncCursorSource<Content>>()))
+            Mock.Setup(m => m.ToEnumerable(It.IsAny<IAsyncCursorSource<ContentData>>()))
                 .Returns(list);
         }
     }

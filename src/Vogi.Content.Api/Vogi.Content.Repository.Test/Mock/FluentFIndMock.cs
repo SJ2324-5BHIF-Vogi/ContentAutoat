@@ -20,7 +20,7 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
             FindFluentMock = findFluentMock;
             
             Mock = new Mock<IFindFluentFind>();
-            Mock.Setup(m => m.Find(It.IsAny<IMongoCollection<Content>>(), It.IsAny<FilterDefinition<Content>>(), default!))
+            Mock.Setup(m => m.Find(It.IsAny<IMongoCollection<ContentData>>(), It.IsAny<FilterDefinition<ContentData>>(), default!))
                     .Returns(FindFluentMock.Mock.Object);
         }
 

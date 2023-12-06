@@ -48,7 +48,7 @@ namespace Vogi.ContentAutoat.Repository.Test.Tests
 
 
             //Assert
-            RepoMocked.MongoCollectionM.Mock.Verify(m => m.DeleteOne(It.Is<FilterDefinition<Content>>(w => w.ToBson(null, null, null, default) == Builders<Content>.Filter.Eq(c => c.Guid, guid).ToBson(null, null, null, default)), default), Times.Never);
+            RepoMocked.MongoCollectionM.Mock.Verify(m => m.DeleteOne(It.Is<FilterDefinition<ContentData>>(w => w.ToBson(null, null, null, default) == Builders<ContentData>.Filter.Eq(c => c.Guid, guid).ToBson(null, null, null, default)), default), Times.Never);
         }
 
 
@@ -61,7 +61,7 @@ namespace Vogi.ContentAutoat.Repository.Test.Tests
             var Repo = RepoMocked.Repo;
             var guid = Guid.NewGuid();
 
-            var Content = new Content()
+            var Content = new ContentData()
             {
                 Data = "JaJaJaJa",
                 Guid = Guid.NewGuid(),

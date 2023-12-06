@@ -14,11 +14,11 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
     {
         public Mock<ISingleOrDefault> Mock { get; init; }
 
-        public SingleOrDefaultMock(Content Single)
+        public SingleOrDefaultMock(ContentData Single)
         {
             Mock = new Mock<ISingleOrDefault>();
 
-            Mock.Setup(m => m.SingleOrDefault(It.IsAny<IFindFluent<Content, Content>>(), default))
+            Mock.Setup(m => m.SingleOrDefault(It.IsAny<IFindFluent<ContentData, ContentData>>(), default))
                 .Returns(Single);
             
         }

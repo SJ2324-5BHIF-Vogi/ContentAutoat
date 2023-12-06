@@ -7,6 +7,8 @@ using Vogi.ContentAutoat.Domain.Dtos.Mediator;
 using Vogi.ContentAutoat.Domain.Dtos.Mediator.Base;
 using Vogi.ContentAutoat.Domain.Interfaces.Repository;
 using Vogi.ContentAutoat.Repository;
+using Vogi.ContentAutoat.Domain.Interfaces.ExtensionMethodeWrapper;
+using Vogi.ContentAutoat.Domain.ExtensionMethodeWrapper;
 #endregion
 
 #region BuilderSetup
@@ -42,6 +44,12 @@ builder.Services.AddScoped<IValidator<ContentGetAllDto>, ContentGetAllDtoValidat
 
 builder.Services.AddScoped<IValidator<ContentGetDto>, GuidDtoValidator>();
 builder.Services.AddScoped<IValidator<ContentDeleteDto>, GuidDtoValidator>();
+#endregion
+
+#region Wrapper
+builder.Services.AddScoped<IToEnumerable, CursorExtensionWrapper>();
+builder.Services.AddScoped<ISingleOrDefault, CursorExtensionWrapper>();
+builder.Services.AddScoped<IFindFluentFind, FindFluentExtensionWrapper>();
 #endregion
 
 #region Repositories

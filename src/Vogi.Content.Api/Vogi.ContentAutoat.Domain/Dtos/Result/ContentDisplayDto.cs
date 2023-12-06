@@ -15,7 +15,7 @@ namespace Vogi.ContentAutoat.Domain.Dtos.Result
         public Guid Guid { get; set; } = Guid.Empty;
         public Guid User { get; set; } = Guid.Empty;
 
-        public static implicit operator ContentDisplayDto(Content content)
+        public static implicit operator ContentDisplayDto(ContentData content)
         {
             return new ContentDisplayDto() { Titel = content.Titel, Data = content.Data, Posted = content.Posted, Guid = content.Guid };
         }

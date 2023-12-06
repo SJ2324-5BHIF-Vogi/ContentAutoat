@@ -21,7 +21,7 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
             MongoCollectionMock = mongoCollectionMock;
 
             Mock = new Mock<IMongoContext>();
-            Mock.Setup(m => m.GetCollection<Content>())
+            Mock.Setup(m => m.GetCollection<ContentData>())
                 .Returns(() => MongoCollectionMock.Mock.Object);
         }
         public MongoContextMock():this(new MongoCollectionMock()) { }

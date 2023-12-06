@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vogi.ContentAutoat.Domain.Model
 {
-    public class Content
+    public class ContentData
     {
         public string Titel { get; set; } = string.Empty;
         public string Data { get; set; } = string.Empty;

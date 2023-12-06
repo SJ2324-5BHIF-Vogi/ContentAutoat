@@ -12,9 +12,9 @@ namespace Vogi.ContentAutoat.Domain.Dtos.Mediator.Base
         public string Titel { get; set; } = string.Empty;
         public string Data { get; set; } = string.Empty;
 
-        public static implicit operator Content(ContentDto content)
+        public static implicit operator ContentData(ContentDto content)
         {
-            return new Content()
+            return new ContentData()
             {
                 Titel = content.Titel,
                 Data = content.Data,

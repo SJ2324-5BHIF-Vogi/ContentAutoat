@@ -4,8 +4,8 @@ namespace Vogi.ContentAutoat.Domain.Interfaces.Repository
 {
     public interface IContentWriteRepository
     {
-        void Add(Content content);
+        void Add(ContentData content);
         bool Delete(Guid guid);
-        bool Update(Guid guid, Content updatedContent);
+        bool Update(Guid guid, ContentData updatedContent);
     }
 }

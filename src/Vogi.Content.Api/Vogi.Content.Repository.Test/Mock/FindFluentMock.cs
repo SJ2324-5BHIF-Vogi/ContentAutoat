@@ -13,11 +13,11 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
 {
     internal class FindFluentMock
     {
-        public Mock<IFindFluent<Content, Content>> Mock { get; init; }
+        public Mock<IFindFluent<ContentData, ContentData>> Mock { get; init; }
 
         public FindFluentMock()
         {
-            Mock = new Mock<IFindFluent<Content, Content>>();
+            Mock = new Mock<IFindFluent<ContentData, ContentData>>();
             Mock.SetupSequence(m => m.Skip(It.IsAny<int>()))
                           .Returns(Mock.Object);
             Mock.SetupSequence(m => m.Limit(It.IsAny<int>()))
@@ -25,9 +25,9 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
 
         }
 
-        public List<Content> TestData => new List<Content>(new Content[]
+        public List<ContentData> TestData => new List<ContentData>(new ContentData[]
             {
-                new Content
+                new ContentData
             {
                 Titel = "Erster Tweet",
                 Data = "Das ist mein erster Tweet!",
@@ -35,7 +35,7 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
                 Guid = new Guid("11111111-1111-1111-1111-111111111111"),
                 User = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
             },
-            new Content
+            new ContentData
             {
                 Titel = "Zweiter Tweet",
                 Data = "Jetzt verstehe ich, wie das funktioniert.",
@@ -43,7 +43,7 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
                 Guid = new Guid("22222222-2222-2222-2222-222222222222"),
                 User = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")
             },
-            new Content
+            new ContentData
             {
                 Titel = "Dritter Tweet",
                 Data = "Ich liebe diese Plattform!",
@@ -51,7 +51,7 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
                 Guid = new Guid("33333333-3333-3333-3333-333333333333"),
                 User = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc")
             },
-            new Content
+            new ContentData
             {
                 Titel = "Vierter Tweet",
                 Data = "Schaut euch das an! #cool",
@@ -59,7 +59,7 @@ namespace Vogi.ContentAutoat.Repository.Test.Mock
                 Guid = new Guid("44444444-4444-4444-4444-444444444444"),
                 User = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd")
             },
-            new Content
+            new ContentData
             {
                 Titel = "Fünfter Tweet",
                 Data = "Ich kann nicht glauben, dass es schon so spät ist.",
