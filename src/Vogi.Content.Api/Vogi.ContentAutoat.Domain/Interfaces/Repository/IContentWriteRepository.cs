@@ -6,6 +6,6 @@ namespace Vogi.ContentAutoat.Domain.Interfaces.Repository
     {
         void Add(ContentData content);
         bool Delete(Guid guid);
-        bool Update(Guid guid, ContentData updatedContent);
+        int Update(Guid guid, ContentData updatedContent);
     }
 }

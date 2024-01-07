@@ -21,7 +21,9 @@ namespace Vogi.ContentAutoat.Application.ContentHandler
 
         public Task Handle(ContentUpdateDto request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            ContentData content = request;
+            _writeRepo.Update(request.Guid, content);
+            return Task.FromResult(content.Guid);
         }
     }
 }

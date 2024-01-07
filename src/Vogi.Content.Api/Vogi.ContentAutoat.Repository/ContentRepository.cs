@@ -63,11 +63,27 @@ namespace Vogi.ContentAutoat.Repository
             _context.GetCollection<ContentData>().InsertOne(content);
         }
 
-        public bool Update(Guid guid, ContentData updatedContent)
+        public int Update(Guid guid, ContentData updatedContent)
         {
+            if (updatedContent.Titel == null && updatedContent.Data == null)
+            {
+                return 0;
+            }
+
             var filter = Builders<ContentData>.Filter.Eq(c => c.Guid, guid);
-            var result = _context.GetCollection<ContentData>().ReplaceOne(filter, updatedContent);
-            return result.IsAcknowledged && result.ModifiedCount > 0;
+            var update = Builders<ContentData>.Update.Combine();
+
+            if(updatedContent.Data != null)
+            {
+                update.Set(c=>c.Data,updatedContent.Data);
+            }
+            if (updatedContent.Titel != null)
+            {
+                update.Set(c => c.Titel, updatedContent.Titel);
+            }
+
+            var result = _context.GetCollection<ContentData>().UpdateOne(filter, update);
+            return (int)result.ModifiedCount;
         }
 
         public bool Delete(Guid guid)
