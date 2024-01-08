@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Vogi.ContentAutoat.Domain.Exceptions;
 using Vogi.ContentAutoat.Domain.Model;
 
 namespace Vogi.ContentAutoat.Domain.Dtos.Result
@@ -17,7 +18,8 @@ namespace Vogi.ContentAutoat.Domain.Dtos.Result
 
         public static implicit operator ContentDisplayDto(ContentData content)
         {
-            return new ContentDisplayDto() { Titel = content.Titel, Data = content.Data, Posted = content.Posted, Guid = content.Guid };
+            if (content == null) throw new NotFoundException("Content");
+            return new ContentDisplayDto() { Titel = content.Titel, Data = content.Data, Posted = content.Posted, Guid = content.Guid,User=content.User };
         }
     }
 }

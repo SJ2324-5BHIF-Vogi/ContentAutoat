@@ -9,6 +9,7 @@ using Vogi.ContentAutoat.Domain.Interfaces.Repository;
 using Vogi.ContentAutoat.Repository;
 using Vogi.ContentAutoat.Domain.Interfaces.ExtensionMethodeWrapper;
 using Vogi.ContentAutoat.Domain.ExtensionMethodeWrapper;
+using Vogi.ContentAutoat.Application.ContentHandler;
 #endregion
 
 #region BuilderSetup
@@ -60,7 +61,7 @@ builder.Services.AddScoped<IContentWriteRepository, ContentRepository>();
 #region Mediator
 builder.Services.AddMediatR((c) =>
 {
-    c.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+    c.RegisterServicesFromAssemblies(typeof(AddContentHandler).Assembly);
 });
 #endregion
 

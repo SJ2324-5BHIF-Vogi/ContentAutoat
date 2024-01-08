@@ -11,14 +11,14 @@ namespace Vogi.ContentAutoat.Api.Controlers
     [ApiController]
     public class ContentController : ControllerBase
     {
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
         private readonly IValidator<ContentAddDto> _contentAddDto;
         private readonly IValidator<ContentDeleteDto> _contentDeleteDto;
         private readonly IValidator<ContentGetAllDto> _contentGetAllDto;
         private readonly IValidator<ContentGetDto> _contentGetDto;
         private readonly IValidator<ContentUpdateDto> _contentUpdateDto;
 
-        public ContentController(Mediator mediator, IValidator<ContentAddDto> contentAddDto, IValidator<ContentDeleteDto> contentDeleteDto, IValidator<ContentGetAllDto> contentGetAllDto, IValidator<ContentGetDto> contentGetDto, IValidator<ContentUpdateDto> contentUpdateDto)
+        public ContentController(IMediator mediator, IValidator<ContentAddDto> contentAddDto, IValidator<ContentDeleteDto> contentDeleteDto, IValidator<ContentGetAllDto> contentGetAllDto, IValidator<ContentGetDto> contentGetDto, IValidator<ContentUpdateDto> contentUpdateDto)
         {
             _mediator = mediator;
             _contentAddDto = contentAddDto;
@@ -36,15 +36,16 @@ namespace Vogi.ContentAutoat.Api.Controlers
             return Created("Content/" + guid, guid);
         }
 
-        [HttpPatch]
+        [HttpPatch("{Guid}")]
         public IActionResult Update([FromRoute()] Guid Guid, [FromBody()] ContentUpdateDto contenDto)
         {
+            contenDto.Guid = Guid;
             _contentUpdateDto.ValidateAndThrow(contenDto);
             var guid = _mediator.Send(contenDto);
             return Ok(guid);
         }
 
-        [HttpDelete]
+        [HttpDelete("{Guid}")]
         public IActionResult Delete([FromRoute()] Guid Guid)
         {
             var dto = new ContentDeleteDto() { guid = Guid };
@@ -59,11 +60,11 @@ namespace Vogi.ContentAutoat.Api.Controlers
             var dto = new ContentGetDto() { guid = Guid };
             _contentGetDto.ValidateAndThrow(dto);
             var result = _mediator.Send(dto);
-            return Ok(result);
+            return Ok(result.Result);
         }
 
         [HttpGet()]
-        public IActionResult GetAll([FromQuery()]int Page = 1, [FromQuery()] int PageSize= 200, [FromQuery()] Guid? User = null, [FromQuery()] DateTime? VorGrenze = null, [FromQuery()] DateTime? NachGrenze= null)
+        public IActionResult GetAll([FromQuery()]int Page = 1, [FromQuery()] int PageSize= 100, [FromQuery()] Guid? User = null, [FromQuery()] DateTime? VorGrenze = null, [FromQuery()] DateTime? NachGrenze= null)
         {
             var dto = new ContentGetAllDto()
             {
@@ -76,8 +77,8 @@ namespace Vogi.ContentAutoat.Api.Controlers
 
             _contentGetAllDto.ValidateAndThrow(dto);
 
-            _mediator.Send(dto);
-            return Ok();
+            var r =_mediator.Send(dto);
+            return Ok(r.Result);
         }
     }
 }

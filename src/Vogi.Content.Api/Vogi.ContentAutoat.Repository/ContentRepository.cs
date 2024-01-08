@@ -58,9 +58,11 @@ namespace Vogi.ContentAutoat.Repository
             return _singleOrDefault.SingleOrDefault(_findFluentFind.Find(_context.GetCollection<ContentData>(),filter));
         }
 
-        public void Add(ContentData content)
+        public Guid Add(ContentData content)
         {
+            content.Guid = Guid.NewGuid();
             _context.GetCollection<ContentData>().InsertOne(content);
+            return content.Guid;
         }
 
         public int Update(Guid guid, ContentData updatedContent)
@@ -73,13 +75,13 @@ namespace Vogi.ContentAutoat.Repository
             var filter = Builders<ContentData>.Filter.Eq(c => c.Guid, guid);
             var update = Builders<ContentData>.Update.Combine();
 
-            if(updatedContent.Data != null)
+            if (updatedContent.Data != null)
             {
-                update.Set(c=>c.Data,updatedContent.Data);
+                update = update.Set(c => c.Data, updatedContent.Data);
             }
             if (updatedContent.Titel != null)
             {
-                update.Set(c => c.Titel, updatedContent.Titel);
+                update = update.Set(c => c.Titel, updatedContent.Titel);
             }
 
             var result = _context.GetCollection<ContentData>().UpdateOne(filter, update);
