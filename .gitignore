@@ -420,3 +420,5 @@ FodyWeavers.xsd
 src/Spg.Spengershop.Infrastructure/obj/Spg.SchuelerVerwaltung.Infrastructure.csproj.nuget.g.props
 src/Spg.Spengershop.Infrastructure/obj/Spg.SchuelerVerwaltung.Infrastructure.csproj.nuget.g.props
 *.cache
+/mongoData
+/rabbitData

@@ -10,15 +10,15 @@ using Vogi.ContentAutoat.Repository;
 using Vogi.ContentAutoat.Domain.Interfaces.ExtensionMethodeWrapper;
 using Vogi.ContentAutoat.Domain.ExtensionMethodeWrapper;
 using Vogi.ContentAutoat.Application.ContentHandler;
+using MassTransit;
+using Vogi.ContentAutoat.Api.Consumer;
 #endregion
 
 #region BuilderSetup
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 #endregion
@@ -27,10 +27,20 @@ builder.Services.AddSwaggerGen();
 var Conf = builder.Configuration;
 var DataBase = Conf.GetSection("Database");
 
-string ConnectionString = DataBase.GetValue<string>("ConnectionString");
-string DataBaseName = DataBase.GetValue<string>("DatabaseName");
+string ConnectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? DataBase.GetValue<string>("ConnectionString");
+string DataBaseName = Environment.GetEnvironmentVariable("DatabaseName") ?? DataBase.GetValue<string>("DatabaseName");
 
 var DataBaseConf = new DataBaseCo(ConnectionString, DataBaseName);
+
+var urlsi = Environment.GetEnvironmentVariable("Urls")?.Split(";");
+builder.WebHost.UseUrls(urlsi ?? new string[] { "http://localhost:5141", "https://localhost:7141" });
+
+
+var rabbitMQ = Conf.GetSection("RabbitMq");
+var rabbitUrl = rabbitMQ.GetValue<string>("Url");
+var rabbitUsername = rabbitMQ.GetValue<string>("Username");
+var rabbitPassword = rabbitMQ.GetValue<string>("Password");
+
 #endregion
 
 #region Database
@@ -51,6 +61,28 @@ builder.Services.AddScoped<IValidator<ContentDeleteDto>, GuidDtoValidator>();
 builder.Services.AddScoped<IToEnumerable, CursorExtensionWrapper>();
 builder.Services.AddScoped<ISingleOrDefault, CursorExtensionWrapper>();
 builder.Services.AddScoped<IFindFluentFind, FindFluentExtensionWrapper>();
+#endregion
+
+        #region rabbitMq
+        builder.Services.AddMassTransit(x =>
+        {
+            x.AddConsumer<ContentAddConsumer>();
+            x.AddConsumer<ContentUpdateConsumer>();
+            x.AddConsumer<ContentDeleteConsumer>();
+            x.AddConsumer<ContentGetAllConsumer>();
+            x.AddConsumer<ContentDetailedConsumer>();
+
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(Environment.GetEnvironmentVariable("RabbitMqUrl") ??rabbitUrl, "/", h =>
+                {
+                    h.Username(Environment.GetEnvironmentVariable("RabbitMqUsername") ??rabbitUsername);
+                    h.Password(Environment.GetEnvironmentVariable("RabbitMqPassword") ??rabbitPassword);
+                });
+
+                cfg.ConfigureEndpoints(context);
+            });
+        });
 #endregion
 
 #region Repositories
@@ -75,7 +107,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
