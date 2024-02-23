@@ -30,7 +30,7 @@ services:
       - RabbitMqUrl=rabbitmq
       - RabbitMqUsername=user
       - RabbitMqPassword=password
-      - Urls=http://localhost:5141
+      - Urls=http://*:5141
     depends_on:
         mongodb:
             condition: service_started
