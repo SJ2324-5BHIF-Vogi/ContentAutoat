@@ -21,18 +21,3 @@ services:
       - "27017:27017"
     volumes:
       - ./mongoData:/data/db
-
-  contentAutoat:
-    image: "maxi1324/vogicontentautoatapi:20240223020856"
-    environment:
-      - ConnectionString=mongodb://mongodb:27017
-      - DatabaseName=CotentDB
-      - RabbitMqUrl=rabbitmq
-      - RabbitMqUsername=user
-      - RabbitMqPassword=password
-      - Urls=http://*:5141
-    depends_on:
-        mongodb:
-            condition: service_started
-        rabbitmq:
-            condition: service_healthy

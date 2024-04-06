@@ -15,14 +15,18 @@ namespace Vogi.ContentAutoat.Application.ContentHandler
     public class GetContentHandler : IRequestHandler<ContentGetDto,ContentDisplayDto>
     {
         private readonly IContentReadRepository _readRepo;
-        public GetContentHandler(IContentReadRepository readRepo)
+        private readonly IMediator _mediator;
+
+        public GetContentHandler(IContentReadRepository readRepo, IMediator mediator)
         {
+            _mediator = mediator;
             _readRepo = readRepo;
         }
 
         public Task<ContentDisplayDto> Handle(ContentGetDto request, CancellationToken cancellationToken)
         {
-            ContentDisplayDto c = _readRepo.FindByGuid(request.guid);
+            ContentDisplayDto c = _readRepo.FindByGuid(request!.guid!)!;
+            _mediator.Send(new LoggingDto() { data = $"got content {c.Guid} at {DateTime.Now}" });
             return Task.FromResult(c);
         }
     }

@@ -14,8 +14,11 @@ namespace Vogi.ContentAutoat.Application.ContentHandler
     public class UpdateContentHandler : IRequestHandler<ContentUpdateDto>
     {
         private readonly IContentWriteRepository _writeRepo;
-        public UpdateContentHandler(IContentWriteRepository writeRepo)
+        private readonly IMediator _mediator;
+
+        public UpdateContentHandler(IContentWriteRepository writeRepo, IMediator mediator)
         {
+            _mediator = mediator;
             _writeRepo = writeRepo;
         }
 
@@ -23,6 +26,7 @@ namespace Vogi.ContentAutoat.Application.ContentHandler
         {
             ContentData content = request;
             _writeRepo.Update(request.Guid, content);
+            _mediator.Send(new LoggingDto() { data = $"update {content.Guid} at {DateTime.Now}" });
             return Task.FromResult(content.Guid);
         }
     }

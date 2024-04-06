@@ -14,15 +14,17 @@ namespace Vogi.ContentAutoat.Application.ContentHandler
     public class AddContentHandler : IRequestHandler<ContentAddDto, Guid>
     {
         private readonly IContentWriteRepository _writeRepo;
-        public AddContentHandler(IContentWriteRepository writeRepo)
+        private readonly IMediator _mediator;
+        public AddContentHandler(IContentWriteRepository writeRepo, IMediator mediator)
         {
             _writeRepo = writeRepo;
+            _mediator = mediator;
         }
 
         public Task<Guid> Handle(ContentAddDto request, CancellationToken cancellationToken)
         {
             var guid = _writeRepo.Add(request);
-
+            _mediator.Send(new LoggingDto() { data = $"created content {guid} at {DateTime.Now}" });
             return Task.FromResult(guid);
         }
     }

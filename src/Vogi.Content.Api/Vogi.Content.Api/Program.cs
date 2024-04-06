@@ -12,6 +12,7 @@ using Vogi.ContentAutoat.Domain.ExtensionMethodeWrapper;
 using Vogi.ContentAutoat.Application.ContentHandler;
 using MassTransit;
 using Vogi.ContentAutoat.Api.Consumer;
+using Vogi.ContentAutoat.Infrastructure;
 #endregion
 
 #region BuilderSetup
@@ -41,6 +42,10 @@ var rabbitUrl = rabbitMQ.GetValue<string>("Url");
 var rabbitUsername = rabbitMQ.GetValue<string>("Username");
 var rabbitPassword = rabbitMQ.GetValue<string>("Password");
 
+var loggingUrl = Conf.GetValue<string>("loggingUrl");
+
+builder.Services.AddSingleton(new ApiContext(loggingUrl));
+
 #endregion
 
 #region Database
@@ -63,7 +68,7 @@ builder.Services.AddScoped<ISingleOrDefault, CursorExtensionWrapper>();
 builder.Services.AddScoped<IFindFluentFind, FindFluentExtensionWrapper>();
 #endregion
 
-        #region rabbitMq
+#region rabbitMq
         builder.Services.AddMassTransit(x =>
         {
             x.AddConsumer<ContentAddConsumer>();
@@ -88,6 +93,7 @@ builder.Services.AddScoped<IFindFluentFind, FindFluentExtensionWrapper>();
 #region Repositories
 builder.Services.AddScoped<IContentReadRepository, ContentRepository>();
 builder.Services.AddScoped<IContentWriteRepository, ContentRepository>();
+builder.Services.AddScoped<ILoggingRepository, LoggingRepository>();
 #endregion
 
 #region Mediator
